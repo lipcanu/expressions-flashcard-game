@@ -102,16 +102,41 @@
   #start .card { align-items: center; text-align: center; gap: 22px; padding: 36px 28px; }
   #start h2 { margin: 0; font-size: 1.6rem; font-weight: 700; }
   #start p { margin: 0; color: var(--muted-ink); line-height: 1.5; }
-  #start .count {
-    display: inline-block;
-    padding: 8px 14px;
-    border-radius: 999px;
+
+  .mode-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .mode-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-hard-sm);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mode-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 0 var(--shadow-color); }
+  .mode-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 0 var(--shadow-color); }
+  .mode-btn .mode-icon {
+    flex-shrink: 0;
+    width: 42px; height: 42px;
+    border-radius: 12px;
     background: var(--accent);
     border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--primary);
-    font-weight: 700;
-    font-size: 0.9rem;
   }
+  .mode-btn .mode-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .mode-btn .mode-name { font-weight: 700; font-size: 1rem; color: var(--ink); }
+  .mode-btn .mode-count { font-size: 0.82rem; color: var(--muted-ink); }
+  .mode-btn .mode-arrow { color: var(--border); flex-shrink: 0; }
 
   /* Quiz view */
   .topbar {
@@ -155,6 +180,7 @@
   }
   .prompt {
     margin: 0;
+    margin-top: 18px;
     text-align: center;
     color: var(--primary);
     font-size: 0.85rem;
@@ -178,7 +204,7 @@
     border-radius: 14px;
     color: var(--ink);
     font-family: inherit;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 1rem;
     line-height: 1.35;
     text-align: left;
@@ -190,8 +216,8 @@
   .answer .num {
     position: absolute;
     left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 14px;
+    transform: none;
     width: 30px; height: 30px;
     border-radius: 8px;
     background: rgba(255,255,255,0.45);
@@ -332,6 +358,12 @@
 
   /* Results view */
   #results .card { align-items: center; text-align: center; gap: 18px; padding: 36px 28px; }
+  #missed-section { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .missed-heading { margin: 0; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted-ink); text-align: left; }
+  #missed-list { display: flex; flex-direction: column; gap: 10px; }
+  .missed-card { text-align: left; padding: 14px 16px; border-radius: 14px; background: #fff; border: 1.5px solid var(--border); box-shadow: var(--shadow-hard-sm); display: flex; flex-direction: column; gap: 6px; }
+  .missed-card .missed-expression { margin: 0; font-weight: 700; font-size: 1rem; color: var(--primary); }
+  .missed-card .missed-meaning { margin: 0; font-size: 0.88rem; color: var(--ink); line-height: 1.45; }
   #results .badge {
     width: 76px; height: 76px;
     border-radius: 50%;
@@ -395,12 +427,39 @@
   <section id="start" class="view active">
     <div class="card">
       <h2>¿Listo para practicar?</h2>
-      <p>Elige el significado correcto en español. Cuatro opciones por carta.</p>
-      <span class="count" id="totalCount"></span>
-      <button class="btn" id="startBtn" type="button">
-        Empezar
-        <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </button>
+      <p>Elige el significado correcto en español.</p>
+      <div class="mode-list">
+        <button class="mode-btn" id="modeQuick" type="button">
+          <span class="mode-icon">
+            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </span>
+          <span class="mode-info">
+            <span class="mode-name">Rápida</span>
+            <span class="mode-count">5 expresiones</span>
+          </span>
+          <svg class="lucide mode-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+        <button class="mode-btn" id="modeMid" type="button">
+          <span class="mode-icon">
+            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+          </span>
+          <span class="mode-info">
+            <span class="mode-name">Sesión media</span>
+            <span class="mode-count">10 expresiones</span>
+          </span>
+          <svg class="lucide mode-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+        <button class="mode-btn" id="modeFull" type="button">
+          <span class="mode-icon">
+            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+          </span>
+          <span class="mode-info">
+            <span class="mode-name">Sesión completa</span>
+            <span class="mode-count" id="modeFullCount"></span>
+          </span>
+          <svg class="lucide mode-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -447,6 +506,10 @@
         <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
         Jugar de nuevo
       </button>
+      <div id="missed-section" hidden>
+        <p class="missed-heading">Repasa estas expresiones</p>
+        <div id="missed-list"></div>
+      </div>
     </div>
   </section>
 </main>
@@ -530,6 +593,7 @@ let score = 0;
 let wrong = 0;
 let answered = false;
 let currentButtons = [];
+let missedCards = [];
 
 // ---------- Helpers ----------
 function shuffle(arr) {
@@ -548,11 +612,13 @@ function showView(id) {
 }
 
 // ---------- Game flow ----------
-function startGame() {
-  deck = shuffle([...EXPRESSIONS]);
+function startGame(n) {
+  const pool = shuffle([...EXPRESSIONS]);
+  deck = n ? pool.slice(0, n) : pool;
   index = 0;
   score = 0;
   wrong = 0;
+  missedCards = [];
   showView('quiz');
   renderCard();
 }
@@ -626,6 +692,7 @@ function handleAnswer(btn, isCorrect) {
     btn.classList.add('wrong', 'reveal');
     btn.querySelector('.icon').innerHTML = ICONS.x;
     wrong++;
+    missedCards.push(deck[index]);
     const correctBtn = currentButtons.find(b => b.dataset.correct === 'true');
     if (correctBtn) {
       correctBtn.classList.remove('faded');
@@ -691,6 +758,23 @@ function showResults() {
   // Fill progress bar to 100% before leaving the quiz view
   $('#progressFill').style.width = '100%';
 
+  const missedSection = $('#missed-section');
+  const missedList = $('#missed-list');
+  missedList.innerHTML = '';
+  if (missedCards.length > 0) {
+    missedCards.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'missed-card';
+      card.innerHTML = `<p class="missed-expression"></p><p class="missed-meaning"></p>`;
+      card.querySelector('.missed-expression').textContent = c.expression;
+      card.querySelector('.missed-meaning').textContent = c.correct;
+      missedList.appendChild(card);
+    });
+    missedSection.hidden = false;
+  } else {
+    missedSection.hidden = true;
+  }
+
   showView('results');
   $('#playAgainBtn').focus({ preventScroll: true });
 }
@@ -719,7 +803,7 @@ function confettiBurst(originEl) {
         { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
         { transform: `translate(${dx}px, ${dy + 360}px) rotate(${rot})`, opacity: 0 }
       ],
-      { duration: dur, easing: 'cubic-bezier(.2,.6,.4,1)' }
+      { duration: dur, easing: 'cubic-bezier(.2,.6,.4,1)', fill: 'forwards' }
     );
     document.body.appendChild(piece);
     setTimeout(() => piece.remove(), dur + 60);
@@ -727,21 +811,20 @@ function confettiBurst(originEl) {
 }
 
 // ---------- Wiring ----------
-$('#totalCount').textContent = `${EXPRESSIONS.length} expresiones`;
-$('#startBtn').addEventListener('click', startGame);
+$('#modeFullCount').textContent = `${EXPRESSIONS.length} expresiones`;
+$('#modeQuick').addEventListener('click', () => startGame(5));
+$('#modeMid').addEventListener('click', () => startGame(10));
+$('#modeFull').addEventListener('click', () => startGame(EXPRESSIONS.length));
 $('#nextBtn').addEventListener('click', next);
-$('#playAgainBtn').addEventListener('click', startGame);
+$('#playAgainBtn').addEventListener('click', () => showView('start'));
 
 document.addEventListener('keydown', (e) => {
   const activeId = document.querySelector('.view.active')?.id;
 
-  if (activeId === 'start') {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startGame(); }
-    return;
-  }
+  if (activeId === 'start') return;
 
   if (activeId === 'results') {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startGame(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showView('start'); }
     return;
   }
 

@@ -88,3 +88,10 @@ One row (`a buenas horas mangas verdes`) uses RFC-4180 quoting. Use Python's `cs
 - Vanilla HTML + CSS + JS only. No libraries (Google Fonts CSS link is fine).
 - All data hardcoded in the `<script>` block as a `const EXPRESSIONS = [...]` array.
 - Single `index.html` — no other output files.
+
+## Repository & deployment
+
+- Remote: `git@github.com:lipcanu/expressions-flashcard-game.git` (default branch: `main`)
+- Live URL: https://lipcanu.github.io/expressions-flashcard-game/ (GitHub Pages, served from root of `main`)
+- **Never push to GitHub without explicit confirmation from Diana.**
+- Tracked files: `index.html`, `expressions.csv`, `CLAUDE.md`, `README.md`.
